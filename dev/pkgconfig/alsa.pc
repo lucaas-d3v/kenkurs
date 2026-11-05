@@ -1,0 +1,12 @@
+# Stub so that `cargo check` can type-check the cpal backend on machines without the ALSA
+# development package (e.g. the aarch64 proot dev box). `cargo check` never links, so no real
+# libasound is needed. Never use this for `cargo build`/`cargo test` — install alsa-lib-devel.
+#   PKG_CONFIG_PATH=$PWD/dev/pkgconfig cargo check --all-targets
+prefix=/usr
+libdir=${prefix}/lib
+includedir=${prefix}/include
+Name: alsa
+Description: ALSA stub for type-checking only
+Version: 1.2.16
+Libs: -L${libdir} -lasound
+Cflags: -I${includedir}

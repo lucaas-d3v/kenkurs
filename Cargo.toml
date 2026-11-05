@@ -1,0 +1,42 @@
+[package]
+name = "kenkurs"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Native rewrite of Kenku FM: a lightweight TTRPG audio player (playlists + soundboards)"
+publish = false
+
+[dependencies]
+# Pure-Rust decoding. Opus is not supported by Symphonia yet, so WebM/Opus files will fail to load.
+symphonia = { version = "0.6", default-features = false, features = [
+    "mp3", "flac", "pcm", "adpcm", "alac", "vorbis", "aac",
+    "wav", "aiff", "ogg", "isomp4", "mkv", "all-meta",
+] }
+cpal = { version = "0.18", optional = true }
+rtrb = "0.4"
+crossbeam-channel = "0.5"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+fastrand = "2"
+log = "0.4"
+
+[features]
+default = ["cpal"]
+# Real audio output through the system audio stack (ALSA on Linux; PipeWire and PulseAudio
+# are reached through their ALSA plugins). Needs the ALSA development package at build time
+# (Void Linux: `alsa-lib-devel`). Without this feature the engine runs on a silent real-time
+# clock, which keeps every code path testable on headless machines and containers.
+cpal = ["dep:cpal"]
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+# Unoptimized decoders cannot keep up in real time; keep debug builds glitch-free.
+opt-level = 3
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true
