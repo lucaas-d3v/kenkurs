@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "reverse-api-engineer": {
+      "source": "kalil0321/reverse-api-engineer",
+      "sourceType": "github",
+      "skillPath": "skills/reverse-api-engineer/SKILL.md",
+      "computedHash": "78ab6e697f364ed98869a51ec320964d94f85fc93cbd697e96f2377101b644ec"
+    }
+  }
+}
